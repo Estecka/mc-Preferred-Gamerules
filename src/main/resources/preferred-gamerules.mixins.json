@@ -1,0 +1,13 @@
+{
+	"required": true,
+	"package": "tk.estecka.preferredgamerules.mixin",
+	"compatibilityLevel": "JAVA_17",
+	"mixins": [
+		"GamerulesMixin",
+		"IRuleMixin",
+		"TypeMixin"
+	],
+	"injectors": {
+		"defaultRequire": 1
+	}
+}

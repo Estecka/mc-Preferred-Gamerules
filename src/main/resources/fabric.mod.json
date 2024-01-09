@@ -1,0 +1,35 @@
+{
+	"schemaVersion": 1,
+	"id": "preferred-gamerules",
+	"version": "${version}",
+	"name": "Preferred Gamerules",
+	"description": "Lets you change the default values of gamerules.",
+	"authors": [
+		"Estecka"
+	],
+	"contact": {
+		"homepage": "https://modrinth.com/project/preferred-gamerules",
+		"sources": "https://github.com/Estecka/mc-Preferred-Gamerules"
+	},
+	"license": "MIT",
+	"icon": "assets/preferred-gamerules/icon.png",
+	"environment": "*",
+	"entrypoints": {
+		"main": [
+		],
+		"modmenu": [
+			"tk.estecka.preferredgamerules.config.ModMenu"
+		]
+	},
+	"mixins": [
+		"preferred-gamerules.mixins.json"
+	],
+	"depends": {
+		"fabricloader": ">=0.15.3",
+		"java": ">=17"
+	},
+	"suggests": {
+		"minecraft": "^1.19.4",
+		"modmenu": ">=6"
+	}
+}
