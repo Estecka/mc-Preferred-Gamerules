@@ -17,7 +17,13 @@ repositories {
 	// See https://docs.gradle.org/current/userguide/declaring_repositories.html
 	// for more information about repositories.
 
+	maven { url "https://maven.shedaniel.me/" }
 	maven { url "https://maven.terraformersmc.com/releases/" }
+
+	maven {
+		name = "Modrinth"
+		url = "https://api.modrinth.com/maven"
+	}
 }
 
 dependencies {
@@ -35,6 +41,11 @@ dependencies {
 	// modImplementation "net.fabricmc.fabric-api:fabric-api-deprecated:${project.fabric_version}"
 
 	modImplementation "com.terraformersmc:modmenu:${project.modmenu_version}"
+	modApi("me.shedaniel.cloth:cloth-config-fabric:${project.cloth_version}") {
+		exclude(group: "net.fabricmc.fabric-api")
+	}
+
+	modCompileOnly "maven.modrinth:cloth-gamerules:${project.clothGamerules_version}"
 }
 
 processResources {
