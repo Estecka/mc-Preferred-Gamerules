@@ -4,14 +4,16 @@ import java.io.IOException;
 import java.util.Optional;
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
+import fr.estecka.clothgamerules.api.ClothGamerulesScreenBuilder;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
 import net.minecraft.client.gui.screen.world.EditGameRulesScreen;
+import net.minecraft.resource.featuretoggle.FeatureFlags;
+import net.minecraft.resource.featuretoggle.FeatureSet;
 import net.minecraft.text.Text;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.GameRules.Rule;
-import tk.estecka.clothgamerules.api.ClothGamerulesScreenFactory;
 import tk.estecka.preferredgamerules.IRuleFactory;
 import tk.estecka.preferredgamerules.PreferredGamerules;
 
@@ -19,6 +21,7 @@ public class ModMenu
 implements ModMenuApi
 {
 	static private final Text TITLE = Text.translatable("preferred-gamerules.editTitle");
+	static public final FeatureSet ALL_FEATURES = FeatureFlags.FEATURE_MANAGER.getFeatureSet();
 
 	@Override
 	public ConfigScreenFactory<?> getModConfigScreenFactory(){
@@ -26,12 +29,23 @@ implements ModMenuApi
 	}
 
 	public Screen CreateScreen(Screen parent){
-		GameRules rules = new GameRules();
+		GameRules preferred = new GameRules(ALL_FEATURES);
+		GameRules vanilla = GetVanillaRules();
 
-		if (FabricLoader.getInstance().isModLoaded("cloth-gamerules"))
-			return ClothGamerulesScreenFactory.CreateScreen(parent, TITLE, rules, GetVanillaRules(), r -> SaveConsummer(r));
-		else
-			return new EditGameRulesScreen( rules, r -> {SaveConsummer(r); MinecraftClient.getInstance().setScreen(parent);} );
+		if (!FabricLoader.getInstance().isModLoaded("cloth-gamerules"))
+			return new EditGameRulesScreen( preferred, r -> {SaveConsummer(r); MinecraftClient.getInstance().setScreen(parent);} );
+		else {
+			return new ClothGamerulesScreenBuilder(ALL_FEATURES)
+				.Parent(parent)
+				.Title(TITLE)
+				.ActiveValues(preferred)
+				.ResetValues(vanilla)
+				.DisplayValues("editGamerules.default", vanilla)
+				.DisplayValues("editGamerules.preferred", preferred)
+				.OnClosed(r -> SaveConsummer(r))
+				.Build()
+				;
+		}
 	}
 
 	static private void SaveConsummer(Optional<GameRules> result){
@@ -47,9 +61,9 @@ implements ModMenuApi
 	}
 
 	static private GameRules GetVanillaRules(){
-		GameRules result = new GameRules();
+		GameRules result = new GameRules(ALL_FEATURES);
 
-		GameRules.accept(new GameRules.Visitor(){
+		result.accept(new GameRules.Visitor(){
 			@Override public <T extends Rule<T>> void visit(GameRules.Key<T> key, GameRules.Type<T> type){
 				@SuppressWarnings("unchecked")
 				T vanilla = (T)IRuleFactory.<T>Of(type).preferredgamerules$CreateDefaultRule();
