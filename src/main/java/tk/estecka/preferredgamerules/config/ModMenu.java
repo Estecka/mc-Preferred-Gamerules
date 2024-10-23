@@ -40,8 +40,8 @@ implements ModMenuApi
 				.Title(TITLE)
 				.ActiveValues(preferred)
 				.ResetValues(vanilla)
-				.DisplayValues("editGamerules.default", vanilla)
-				.DisplayValues("editGamerules.preferred", preferred)
+				.DisplayValues("editGamerule.default", null)
+				.DisplayValues("editGamerule.vanilla", vanilla)
 				.OnClosed(r -> SaveConsummer(r))
 				.Build()
 				;
