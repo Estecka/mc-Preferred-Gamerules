@@ -4,7 +4,6 @@ import java.io.IOException;
 import java.util.Optional;
 import com.terraformersmc.modmenu.api.ConfigScreenFactory;
 import com.terraformersmc.modmenu.api.ModMenuApi;
-import fr.estecka.clothgamerules.api.ClothGamerulesScreenBuilder;
 import net.fabricmc.loader.api.FabricLoader;
 import net.minecraft.client.MinecraftClient;
 import net.minecraft.client.gui.screen.Screen;
@@ -14,6 +13,7 @@ import net.minecraft.resource.featuretoggle.FeatureSet;
 import net.minecraft.text.Text;
 import net.minecraft.world.GameRules;
 import net.minecraft.world.GameRules.Rule;
+import tk.estecka.clothgamerules.api.ClothGamerulesScreenBuilder;
 import tk.estecka.preferredgamerules.IRuleFactory;
 import tk.estecka.preferredgamerules.PreferredGamerules;
 
@@ -35,7 +35,7 @@ implements ModMenuApi
 		if (!FabricLoader.getInstance().isModLoaded("cloth-gamerules"))
 			return new EditGameRulesScreen( preferred, r -> {SaveConsummer(r); MinecraftClient.getInstance().setScreen(parent);} );
 		else {
-			return new ClothGamerulesScreenBuilder(ALL_FEATURES)
+			return new ClothGamerulesScreenBuilder()
 				.Parent(parent)
 				.Title(TITLE)
 				.ActiveValues(preferred)

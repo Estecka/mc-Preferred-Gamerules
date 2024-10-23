@@ -31,10 +31,10 @@
 		"java": ">=21"
 	},
 	"suggests": {
-		"cloth-gamerules": "^2",
+		"cloth-gamerules": "^1.2",
 		"modmenu": ">=12"
 	},
 	"breaks": {
-		"cloth-gamerules": "<2"
+		"cloth-gamerules": "<1.2"
 	}
 }
