@@ -5,4 +5,4 @@ Initial Release
 ### 1.21.2
 #### No Workaround:
 - `Gamerules.accept` is no longer static
-- `Gamerules::new` Now require feature flags
+- `Gamerules::new` Now requires feature flags
