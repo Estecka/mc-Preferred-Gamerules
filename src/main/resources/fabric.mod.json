@@ -9,7 +9,8 @@
 	],
 	"contact": {
 		"homepage": "https://modrinth.com/project/preferred-gamerules",
-		"sources": "https://github.com/Estecka/mc-Preferred-Gamerules"
+		"sources": "https://github.com/Estecka/mc-Preferred-Gamerules",
+		"issues":  "https://github.com/Estecka/mc-Preferred-Gamerules/issues"
 	},
 	"license": "MIT",
 	"icon": "assets/preferred-gamerules/icon.png",
@@ -25,6 +26,7 @@
 		"preferred-gamerules.mixins.json"
 	],
 	"depends": {
+		"minecraft": "<1.21.2",
 		"fabricloader": ">=0.15.3",
 		"java": ">=17"
 	},
