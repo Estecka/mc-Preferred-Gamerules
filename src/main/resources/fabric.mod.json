@@ -26,15 +26,15 @@
 		"preferred-gamerules.mixins.json"
 	],
 	"depends": {
-		"minecraft": "<1.21.2",
-		"fabricloader": ">=0.15.3",
-		"java": ">=17"
-	},
-	"recommends": {
-		"minecraft": "^1.19.4"
+		"minecraft": "^1.21.2",
+		"fabricloader": ">=0.16.7",
+		"java": ">=21"
 	},
 	"suggests": {
-		"cloth-gamerules": "^1",
-		"modmenu": ">=6"
+		"cloth-gamerules": "^1.2",
+		"modmenu": ">=12"
+	},
+	"breaks": {
+		"cloth-gamerules": "<1.2"
 	}
 }

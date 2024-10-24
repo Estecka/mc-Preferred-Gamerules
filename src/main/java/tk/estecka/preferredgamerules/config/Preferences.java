@@ -10,6 +10,7 @@ import net.minecraft.world.GameRules.Visitor;
 import tk.estecka.preferredgamerules.IRuleFactory;
 import tk.estecka.preferredgamerules.ITypeDuck;
 import tk.estecka.preferredgamerules.PreferredGamerules;
+import tk.estecka.preferredgamerules.mixin.IGamerulesMixin;
 import tk.estecka.preferredgamerules.mixin.IRuleMixin;
 
 public class Preferences
@@ -36,7 +37,7 @@ implements ConfigIO.ICodec
 		return values;
 	}
 
-	public <T extends Rule<T>> void Apply(Key<T> key, Type<T> type){
+	public void Apply(Key<?> key, Type<?> type){
 		String preferred = rawValues.get(key.getName());
 
 		if (preferred != null){
@@ -59,18 +60,15 @@ implements ConfigIO.ICodec
 	 * Changes all currently registered gamerules to match the preferences.
 	 */
 	public void ApplyAll(){
-		GameRules.accept(new Visitor() {
-			@Override public <T extends Rule<T>> void visit(GameRules.Key<T> key, GameRules.Type<T> type){
-				Apply(key, type);
-			}
-		});
+		for(var entry : IGamerulesMixin.GetAllRules().entrySet())
+			Apply(entry.getKey(), entry.getValue());
 	}
 
 	/**
 	 * Changes preferences to match the given rules.
 	 */
 	public void	SetAsPreferred(GameRules rules){
-		GameRules.accept(new Visitor() {
+		rules.accept(new Visitor() {
 			@Override public <T extends Rule<T>> void visit(GameRules.Key<T> key, GameRules.Type<T> type){
 				String keyString = key.getName();
 				String preferredvalue = rules.get(key).serialize();
