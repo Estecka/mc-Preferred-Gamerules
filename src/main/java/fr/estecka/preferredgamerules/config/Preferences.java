@@ -86,11 +86,11 @@ implements ConfigIO.ICodec
 
 	public <T> void	SetSingleAsPreferred(GameRules values, GameRule<T> type){
 		Identifier key = Registries.GAME_RULE.getId(type);
-		T value = values.getValue(type);
 
 		// Update preferences
-		String rawValue = type.getValueName(value);
-		if (rawValue.equals(IRuleFactory.Of(type).preferredgamerules$GetVanillaValue()))
+		String rawValue = type.getValueName(values.getValue(type));
+		String vanilla  = type.getValueName(IRuleFactory.Of(type).preferredgamerules$GetVanillaValue());
+		if (rawValue.equals(vanilla))
 			this.rawValues.remove(key);
 		else
 			this.rawValues.put(key, rawValue);
