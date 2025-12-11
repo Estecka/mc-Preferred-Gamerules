@@ -29,7 +29,9 @@ implements IRuleFactory<T>
 		}
 		else {
 			DataResult<T> result = this.deserialize(value);
-			result.ifSuccess(r -> this.preferredValue = Optional.of(r));
+			result.ifSuccess(r -> this.preferredValue = Optional.of(r))
+			      .ifError(err -> this.preferredValue = Optional.empty())
+			      ;
 			return result;
 		}
 
