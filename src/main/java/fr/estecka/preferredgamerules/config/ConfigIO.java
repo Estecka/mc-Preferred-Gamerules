@@ -42,7 +42,7 @@ import net.fabricmc.loader.api.FabricLoader;
 
 public class ConfigIO
 {
-	static public final String VERSION = "1.3";
+	static public final String VERSION = "1.4";
 	static private final Logger LOGGER = LoggerFactory.getLogger("ConfigIO");
 
 	private final File file;
@@ -185,13 +185,13 @@ public class ConfigIO
 		try (FileOutputStream out = new FileOutputStream(file, false))
 		{
 			final PrintWriter writer = new PrintWriter(out);
-			for (var entry : properties.entrySet()){
+			properties.entrySet().stream().sorted(Map.Entry.comparingByKey()).forEachOrdered(entry->{
 				writer.write(entry.getKey());
 				writer.write('=');
 				writer.write(entry.getValue());
 				writer.write('\n');
 				writer.flush();
-			}
+			});
 		}
 		catch (IOException e){
 			throw e;
