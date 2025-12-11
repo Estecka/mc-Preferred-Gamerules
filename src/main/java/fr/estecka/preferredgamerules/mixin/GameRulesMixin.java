@@ -12,7 +12,7 @@ import net.minecraft.world.rule.GameRules;
 public class GameRulesMixin
 {
 	@Inject( method="<clinit>", at=@At("HEAD") )
-	static private void	entryPoint(CallbackInfo info){
+	static private void	LoadConfig(CallbackInfo info){
 		PrefRulesMod.LoadConfig();
 		PrefRulesMod.preferences.ApplyAll();
 	}

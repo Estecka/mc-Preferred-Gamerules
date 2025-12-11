@@ -34,6 +34,12 @@ loom {
 			programArgs "Dev"
 			runDir "run/client"
 		}
+		clientClothless {
+			inherit client
+			configName "Client (Clothless)"
+			runDir "run/client"
+			property("fabric.debug.disableModIds", "cloth-gamerules")
+		}
 		server {
 			configName "Server"
 			runDir "run/server"
@@ -55,7 +61,7 @@ dependencies {
 		exclude(group: "net.fabricmc.fabric-api")
 	}
 
-	modImplementation "maven.modrinth:cloth-gamerules:${project.clothGamerules_version}"
+	modCompileOnly "maven.modrinth:cloth-gamerules:${project.clothGamerules_version}"
 }
 
 processResources {

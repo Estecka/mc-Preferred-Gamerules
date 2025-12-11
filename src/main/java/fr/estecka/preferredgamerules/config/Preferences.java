@@ -41,7 +41,10 @@ implements ConfigIO.ICodec
 	 * @param ruleId
 	 */
 	public void ApplySingle(Identifier ruleId){
-		GameRule<?> rule =  Registries.GAME_RULE.get(ruleId);
+		this.ApplySingle(ruleId, Registries.GAME_RULE.get(ruleId));
+	}
+
+	public void ApplySingle(Identifier ruleId, GameRule<?> rule){
 		String preferredValue = rawValues.get(ruleId.toString());
 
 		DataResult<?> result = IRuleFactory.Of(rule).preferredgamerules$SetPreferred(preferredValue);
