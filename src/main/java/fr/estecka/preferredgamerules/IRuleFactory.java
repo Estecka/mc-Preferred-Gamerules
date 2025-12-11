@@ -10,7 +10,6 @@ public interface IRuleFactory<T>
 {
 	@SuppressWarnings("unchecked")
 	static public <T> IRuleFactory<T> Of(GameRule<T> type){
-		// FIXME
 		return (IRuleFactory<T>)(Object)type;
 	}
 
