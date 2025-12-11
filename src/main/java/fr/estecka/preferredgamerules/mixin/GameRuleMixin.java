@@ -45,12 +45,8 @@ implements IRuleFactory<T>
 		return this.defaultValue;
 	}
 
-	public T preferredgamerules$GetDefaultValue(){
-		return this.preferredValue.orElse(this.defaultValue);
-	}
-
 	@Overwrite
 	public T getDefaultValue(){
-		return this.preferredgamerules$GetDefaultValue();
+		return this.preferredValue.orElse(this.defaultValue);
 	}
 }

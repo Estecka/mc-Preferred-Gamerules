@@ -17,5 +17,4 @@ public interface IRuleFactory<T>
 
 	Optional<T> preferredgamerules$GetPreferredValue();
 	T preferredgamerules$GetVanillaValue();
-	T preferredgamerules$GetDefaultValue();
 }
