@@ -9,7 +9,7 @@ import net.minecraft.util.Identifier;
 import net.minecraft.world.rule.GameRule;
 import net.minecraft.world.rule.GameRules;
 import fr.estecka.preferredgamerules.IRuleFactory;
-import fr.estecka.preferredgamerules.PreferredGamerules;
+import fr.estecka.preferredgamerules.PrefRulesMod;
 
 
 public class Preferences
@@ -45,7 +45,7 @@ implements ConfigIO.ICodec
 		String preferredValue = rawValues.get(ruleId.toString());
 
 		DataResult<?> result = IRuleFactory.Of(rule).preferredgamerules$SetPreferred(preferredValue);
-		result.ifError(err->PreferredGamerules.LOGGER.error(
+		result.ifError(err->PrefRulesMod.LOGGER.error(
 			"Invalid value for gamerule {}: \"{}\"\n{}",
 			ruleId, preferredValue, err.message()
 		));

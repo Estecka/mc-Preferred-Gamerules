@@ -6,10 +6,11 @@ import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 
-public class PreferredGamerules
+public class PrefRulesMod
 {
-	static public final Logger LOGGER = LoggerFactory.getLogger("preferred-gamerules");
-	static public final ConfigIO io = new ConfigIO("preferred-gamerules.properties");
+	static public final String MODID = "preferred-gamerules";
+	static public final Logger LOGGER = LoggerFactory.getLogger(MODID);
+	static public final ConfigIO io = new ConfigIO(MODID+".properties");
 	static public final Preferences preferences = new Preferences();
 
 	static public void LoadConfig() {

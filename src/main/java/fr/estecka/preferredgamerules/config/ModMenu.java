@@ -13,7 +13,7 @@ import net.minecraft.resource.featuretoggle.FeatureSet;
 import net.minecraft.text.Text;
 import net.minecraft.world.rule.GameRules;
 import tk.estecka.clothgamerules.api.ClothGamerulesScreenBuilder;
-import fr.estecka.preferredgamerules.PreferredGamerules;
+import fr.estecka.preferredgamerules.PrefRulesMod;
 
 
 public class ModMenu
@@ -49,12 +49,12 @@ implements ModMenuApi
 
 	static private void SaveConsummer(Optional<GameRules> result){
 		if (result.isPresent()){
-			PreferredGamerules.preferences.SetAllAsPreferred(result.get());
+			PrefRulesMod.preferences.SetAllAsPreferred(result.get());
 			try {
-				PreferredGamerules.io.Write(PreferredGamerules.preferences);
+				PrefRulesMod.io.Write(PrefRulesMod.preferences);
 			}
 			catch (IOException e){
-				PreferredGamerules.LOGGER.error("Unable to save config: {}", e);
+				PrefRulesMod.LOGGER.error("Unable to save config: {}", e);
 			}
 		}
 	}
