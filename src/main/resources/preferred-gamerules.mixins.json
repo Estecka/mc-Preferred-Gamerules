@@ -3,10 +3,8 @@
 	"package": "fr.estecka.preferredgamerules.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
-		"GamerulesMixin",
-		"IGamerulesMixin",
-		"IRuleMixin",
-		"TypeMixin"
+		"GameRuleMixin",
+		"GameRulesMixin"
 	],
 	"injectors": {
 		"defaultRequire": 1
