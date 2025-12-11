@@ -11,8 +11,10 @@ import net.minecraft.client.gui.screen.world.EditGameRulesScreen;
 import net.minecraft.resource.featuretoggle.FeatureFlags;
 import net.minecraft.resource.featuretoggle.FeatureSet;
 import net.minecraft.text.Text;
+import net.minecraft.world.rule.GameRule;
 import net.minecraft.world.rule.GameRules;
 import tk.estecka.clothgamerules.api.ClothGamerulesScreenBuilder;
+import fr.estecka.preferredgamerules.IRuleFactory;
 import fr.estecka.preferredgamerules.PrefRulesMod;
 
 
@@ -60,17 +62,12 @@ implements ModMenuApi
 	}
 
 	static private GameRules GetVanillaRules(){
-		GameRules result = new GameRules(ALL_FEATURES);
-
-		// FIXME
-		// result.accept(new GameRules.Visitor(){
-		// 	@Override public <T extends Rule<T>> void visit(GameRules.Key<T> key, GameRules.Type<T> type){
-		// 		@SuppressWarnings("unchecked")
-		// 		T vanilla = (T)IRuleFactory.<T>Of(type).preferredgamerules$GetVanillaValue();
-		// 		result.get(key).setValue(vanilla, null);
-		// 	}
-		// });
-
+		final GameRules result = new GameRules(ALL_FEATURES);
+		result.streamRules().forEach(rule -> SetVanillaSingle(result, rule));
 		return result;
+	}
+
+	static private <T> void SetVanillaSingle(GameRules values, GameRule<T> type){
+		values.setValue(type, IRuleFactory.Of(type).preferredgamerules$GetVanillaValue(), null);
 	}
 }
