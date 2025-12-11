@@ -16,13 +16,23 @@ public class Preferences
 implements ConfigIO.ICodec
 {
 	static private final String PREFIX = "gamerule.";
-	public final Map<String, String> rawValues = new HashMap<>();
+	public final Map<Identifier, String> rawValues = new HashMap<>();
+	public final Map<String, String> badIds = new HashMap<>();
 
 	@Override
 	public void Decode(Map<String, String> values){
 		for (String key : values.keySet())
 		if  (key.startsWith(PREFIX)) {
-			rawValues.put(key.substring(PREFIX.length()), values.get(key));
+			String value = values.get(key);
+			key = key.substring(PREFIX.length());
+
+			Identifier id = Identifier.tryParse(key);
+			if (id != null)
+				rawValues.put(id, value);
+			else {
+				badIds.put(key, value);
+				PrefRulesMod.LOGGER.error("Invalid gamerule ID: {}", key);
+			}
 		}
 	}
 
@@ -30,6 +40,9 @@ implements ConfigIO.ICodec
 	public Map<String, String> Encode(){
 		Map<String, String> values = new HashMap<>();
 		for (var entry : this.rawValues.entrySet()){
+			values.put(PREFIX+entry.getKey(), entry.getValue());
+		}
+		for (var entry : this.badIds.entrySet()){
 			values.put(PREFIX+entry.getKey(), entry.getValue());
 		}
 	
@@ -45,7 +58,7 @@ implements ConfigIO.ICodec
 	}
 
 	public void ApplySingle(Identifier ruleId, GameRule<?> rule){
-		String preferredValue = rawValues.get(ruleId.toString());
+		String preferredValue = rawValues.get(ruleId);
 
 		DataResult<?> result = IRuleFactory.Of(rule).preferredgamerules$SetPreferred(preferredValue);
 		result.ifError(err->PrefRulesMod.LOGGER.error(
@@ -78,9 +91,9 @@ implements ConfigIO.ICodec
 		// Update preferences
 		String rawValue = type.getValueName(value);
 		if (rawValue.equals(IRuleFactory.Of(type).preferredgamerules$GetVanillaValue()))
-			this.rawValues.remove(key.toString());
+			this.rawValues.remove(key);
 		else
-			this.rawValues.put(key.toString(), rawValue);
+			this.rawValues.put(key, rawValue);
 
 		// Update registered
 		this.ApplySingle(key);
