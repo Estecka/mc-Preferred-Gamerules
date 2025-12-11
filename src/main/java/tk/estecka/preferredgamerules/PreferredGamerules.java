@@ -10,11 +10,11 @@ public class PreferredGamerules
 {
 	static public final Logger LOGGER = LoggerFactory.getLogger("preferred-gamerules");
 	static public final ConfigIO io = new ConfigIO("preferred-gamerules.properties");
-	static public final Preferences gamerules = new Preferences();
+	static public final Preferences preferences = new Preferences();
 
 	static public void LoadConfig() {
 		try {
-			io.GetOrCreate(gamerules);
+			io.GetOrCreate(preferences);
 		}
 		catch (IOException e){
 			LOGGER.error("{}", e);

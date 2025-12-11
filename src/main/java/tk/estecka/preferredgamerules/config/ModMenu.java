@@ -11,11 +11,10 @@ import net.minecraft.client.gui.screen.world.EditGameRulesScreen;
 import net.minecraft.resource.featuretoggle.FeatureFlags;
 import net.minecraft.resource.featuretoggle.FeatureSet;
 import net.minecraft.text.Text;
-import net.minecraft.world.GameRules;
-import net.minecraft.world.GameRules.Rule;
+import net.minecraft.world.rule.GameRules;
 import tk.estecka.clothgamerules.api.ClothGamerulesScreenBuilder;
-import tk.estecka.preferredgamerules.IRuleFactory;
 import tk.estecka.preferredgamerules.PreferredGamerules;
+
 
 public class ModMenu
 implements ModMenuApi
@@ -50,9 +49,9 @@ implements ModMenuApi
 
 	static private void SaveConsummer(Optional<GameRules> result){
 		if (result.isPresent()){
-			PreferredGamerules.gamerules.SetAsPreferred(result.get());
+			PreferredGamerules.preferences.SetAllAsPreferred(result.get());
 			try {
-				PreferredGamerules.io.Write(PreferredGamerules.gamerules);
+				PreferredGamerules.io.Write(PreferredGamerules.preferences);
 			}
 			catch (IOException e){
 				PreferredGamerules.LOGGER.error("Unable to save config: {}", e);
@@ -63,13 +62,14 @@ implements ModMenuApi
 	static private GameRules GetVanillaRules(){
 		GameRules result = new GameRules(ALL_FEATURES);
 
-		result.accept(new GameRules.Visitor(){
-			@Override public <T extends Rule<T>> void visit(GameRules.Key<T> key, GameRules.Type<T> type){
-				@SuppressWarnings("unchecked")
-				T vanilla = (T)IRuleFactory.<T>Of(type).preferredgamerules$CreateDefaultRule();
-				result.get(key).setValue(vanilla, null);
-			}
-		});
+		// FIXME
+		// result.accept(new GameRules.Visitor(){
+		// 	@Override public <T extends Rule<T>> void visit(GameRules.Key<T> key, GameRules.Type<T> type){
+		// 		@SuppressWarnings("unchecked")
+		// 		T vanilla = (T)IRuleFactory.<T>Of(type).preferredgamerules$GetVanillaValue();
+		// 		result.get(key).setValue(vanilla, null);
+		// 	}
+		// });
 
 		return result;
 	}

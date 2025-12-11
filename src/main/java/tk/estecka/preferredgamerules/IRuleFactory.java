@@ -1,15 +1,22 @@
 package tk.estecka.preferredgamerules;
 
-import net.minecraft.world.GameRules.Rule;
-import net.minecraft.world.GameRules.Type;
+import java.util.Optional;
+import org.jetbrains.annotations.Nullable;
+import com.mojang.serialization.DataResult;
+import net.minecraft.world.rule.GameRule;
 
-public interface IRuleFactory<T extends Rule<T>>
+
+public interface IRuleFactory<T>
 {
 	@SuppressWarnings("unchecked")
-	static public <T extends Rule<T>> IRuleFactory<T> Of(Type<T> type){
-		return (IRuleFactory<T>)type;
+	static public <T> IRuleFactory<T> Of(GameRule<T> type){
+		// FIXME
+		return (IRuleFactory<T>)(Object)type;
 	}
 
-	Rule<T> preferredgamerules$CreatePreferredRule();
-	Rule<T> preferredgamerules$CreateDefaultRule();
+	DataResult<T> preferredgamerules$SetPreferred(@Nullable String value);
+
+	Optional<T> preferredgamerules$GetPreferredValue();
+	T preferredgamerules$GetVanillaValue();
+	T preferredgamerules$GetDefaultValue();
 }

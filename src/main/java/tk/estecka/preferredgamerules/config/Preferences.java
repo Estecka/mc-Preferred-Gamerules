@@ -2,16 +2,15 @@ package tk.estecka.preferredgamerules.config;
 
 import java.util.HashMap;
 import java.util.Map;
-import net.minecraft.world.GameRules;
-import net.minecraft.world.GameRules.Key;
-import net.minecraft.world.GameRules.Rule;
-import net.minecraft.world.GameRules.Type;
-import net.minecraft.world.GameRules.Visitor;
+import com.mojang.serialization.DataResult;
+import net.minecraft.registry.Registries;
+import net.minecraft.registry.RegistryKey;
+import net.minecraft.util.Identifier;
+import net.minecraft.world.rule.GameRule;
+import net.minecraft.world.rule.GameRules;
 import tk.estecka.preferredgamerules.IRuleFactory;
-import tk.estecka.preferredgamerules.ITypeDuck;
 import tk.estecka.preferredgamerules.PreferredGamerules;
-import tk.estecka.preferredgamerules.mixin.IGamerulesMixin;
-import tk.estecka.preferredgamerules.mixin.IRuleMixin;
+
 
 public class Preferences
 implements ConfigIO.ICodec
@@ -37,50 +36,50 @@ implements ConfigIO.ICodec
 		return values;
 	}
 
-	public void Apply(Key<?> key, Type<?> type){
-		String preferred = rawValues.get(key.getName());
+	/**
+	 * Update a single registered rule to match the preferences.
+	 * @param ruleId
+	 */
+	public void ApplySingle(Identifier ruleId){
+		GameRule<?> rule =  Registries.GAME_RULE.get(ruleId);
+		String preferredValue = rawValues.get(ruleId.toString());
 
-		if (preferred != null){
-			IRuleMixin tester = (IRuleMixin)IRuleFactory.Of(type).preferredgamerules$CreateDefaultRule();
-
-			String validated;
-			tester.callDeserialize(preferred);
-			validated = tester.callSerialize();
-
-			if (!preferred.equals(validated)){
-				PreferredGamerules.LOGGER.error("Invalid value for gamerule {}: \"{}\"", key.getName(), preferred);
-				preferred = null;
-			}
-		}
-
-		((ITypeDuck)type).preferredgamerules$SetPreferred(preferred);
+		DataResult<?> result = IRuleFactory.Of(rule).preferredgamerules$SetPreferred(preferredValue);
+		result.ifError(err->PreferredGamerules.LOGGER.error(
+			"Invalid value for gamerule {}: \"{}\"\n{}",
+			ruleId, preferredValue, err.message()
+		));
 	}
 
 	/**
 	 * Changes all currently registered gamerules to match the preferences.
 	 */
 	public void ApplyAll(){
-		for(var entry : IGamerulesMixin.GetAllRules().entrySet())
-			Apply(entry.getKey(), entry.getValue());
+		Registries.GAME_RULE.streamKeys()
+			.map(RegistryKey::getValue)
+			.forEach(this::ApplySingle)
+			;
 	}
 
 	/**
-	 * Changes preferences to match the given rules.
+	 * Changes preferences and registered rules to match the given rules.
 	 */
-	public void	SetAsPreferred(GameRules rules){
-		rules.accept(new Visitor() {
-			@Override public <T extends Rule<T>> void visit(GameRules.Key<T> key, GameRules.Type<T> type){
-				String keyString = key.getName();
-				String preferredvalue = rules.get(key).serialize();
-				String defaultValue = IRuleFactory.Of(type).preferredgamerules$CreateDefaultRule().serialize();
+	public void	SetAllAsPreferred(final GameRules ruleValues){
+		ruleValues.streamRules().forEach(type -> this.SetSingleAsPreferred(ruleValues, type));
+	}
 
-				if (preferredvalue.equals(defaultValue))
-					rawValues.remove(keyString);
-				else
-					rawValues.put(keyString, preferredvalue);
+	public <T> void	SetSingleAsPreferred(GameRules values, GameRule<T> type){
+		Identifier key = Registries.GAME_RULE.getId(type);
+		T value = values.getValue(type);
 
-				Apply(key, type);
-			}
-		});
+		// Update preferences
+		String rawValue = type.getValueName(value);
+		if (rawValue.equals(IRuleFactory.Of(type).preferredgamerules$GetVanillaValue()))
+			this.rawValues.remove(key.toString());
+		else
+			this.rawValues.put(key.toString(), rawValue);
+
+		// Update registered
+		this.ApplySingle(key);
 	}
 }
