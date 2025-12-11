@@ -1,7 +1,7 @@
-package tk.estecka.preferredgamerules.mixin;
+package fr.estecka.preferredgamerules.mixin;
 
 import net.minecraft.world.rule.GameRule;
-import tk.estecka.preferredgamerules.IRuleFactory;
+import fr.estecka.preferredgamerules.IRuleFactory;
 import java.util.Optional;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;

@@ -1,4 +1,4 @@
-package tk.estecka.preferredgamerules.config;
+package fr.estecka.preferredgamerules.config;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -13,7 +13,7 @@ import net.minecraft.resource.featuretoggle.FeatureSet;
 import net.minecraft.text.Text;
 import net.minecraft.world.rule.GameRules;
 import tk.estecka.clothgamerules.api.ClothGamerulesScreenBuilder;
-import tk.estecka.preferredgamerules.PreferredGamerules;
+import fr.estecka.preferredgamerules.PreferredGamerules;
 
 
 public class ModMenu

@@ -19,7 +19,7 @@
 		"main": [
 		],
 		"modmenu": [
-			"tk.estecka.preferredgamerules.config.ModMenu"
+			"fr.estecka.preferredgamerules.config.ModMenu"
 		]
 	},
 	"mixins": [

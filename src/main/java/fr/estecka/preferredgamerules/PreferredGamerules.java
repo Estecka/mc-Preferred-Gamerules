@@ -1,7 +1,7 @@
-package tk.estecka.preferredgamerules;
+package fr.estecka.preferredgamerules;
 
-import tk.estecka.preferredgamerules.config.ConfigIO;
-import tk.estecka.preferredgamerules.config.Preferences;
+import fr.estecka.preferredgamerules.config.ConfigIO;
+import fr.estecka.preferredgamerules.config.Preferences;
 import java.io.IOException;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;

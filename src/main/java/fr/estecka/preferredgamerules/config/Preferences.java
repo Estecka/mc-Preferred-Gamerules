@@ -1,4 +1,4 @@
-package tk.estecka.preferredgamerules.config;
+package fr.estecka.preferredgamerules.config;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -8,8 +8,8 @@ import net.minecraft.registry.RegistryKey;
 import net.minecraft.util.Identifier;
 import net.minecraft.world.rule.GameRule;
 import net.minecraft.world.rule.GameRules;
-import tk.estecka.preferredgamerules.IRuleFactory;
-import tk.estecka.preferredgamerules.PreferredGamerules;
+import fr.estecka.preferredgamerules.IRuleFactory;
+import fr.estecka.preferredgamerules.PreferredGamerules;
 
 
 public class Preferences

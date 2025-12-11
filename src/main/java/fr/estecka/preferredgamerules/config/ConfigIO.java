@@ -1,4 +1,4 @@
-package tk.estecka.preferredgamerules.config;
+package fr.estecka.preferredgamerules.config;
 
 
 /*

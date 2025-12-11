@@ -1,6 +1,6 @@
 {
 	"required": true,
-	"package": "tk.estecka.preferredgamerules.mixin",
+	"package": "fr.estecka.preferredgamerules.mixin",
 	"compatibilityLevel": "JAVA_21",
 	"mixins": [
 		"GamerulesMixin",

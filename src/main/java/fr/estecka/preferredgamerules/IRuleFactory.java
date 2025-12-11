@@ -1,4 +1,4 @@
-package tk.estecka.preferredgamerules;
+package fr.estecka.preferredgamerules;
 
 import java.util.Optional;
 import org.jetbrains.annotations.Nullable;
