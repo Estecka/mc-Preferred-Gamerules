@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '1.8-SNAPSHOT'
+	id 'fabric-loom' version "${loom_version}"
 	id 'maven-publish'
 }
 
@@ -55,14 +55,14 @@ dependencies {
 		exclude(group: "net.fabricmc.fabric-api")
 	}
 
-	modCompileOnly "maven.modrinth:cloth-gamerules:${project.clothGamerules_version}"
+	modImplementation "maven.modrinth:cloth-gamerules:${project.clothGamerules_version}"
 }
 
 processResources {
 	inputs.property "version", project.version
 
 	filesMatching("fabric.mod.json") {
-		expand "version": project.version
+		expand "version": inputs.properties.version
 	}
 }
 
@@ -81,8 +81,10 @@ java {
 }
 
 jar {
+	inputs.property "archivesName", project.base.archivesName
+
 	from("LICENSE") {
-		rename { "${it}_${project.base.archivesName.get()}"}
+		rename { "${it}_${inputs.properties.archivesName}"}
 	}
 
 	exclude "**/*.xcf"
