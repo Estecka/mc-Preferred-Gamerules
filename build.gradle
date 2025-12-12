@@ -1,5 +1,5 @@
 plugins {
-	id 'fabric-loom' version '1.8-SNAPSHOT'
+	id 'fabric-loom' version "${loom_version}"
 	id 'maven-publish'
 }
 
@@ -34,6 +34,12 @@ loom {
 			programArgs "Dev"
 			runDir "run/client"
 		}
+		clientClothless {
+			inherit client
+			configName "Client (Clothless)"
+			runDir "run/client"
+			property("fabric.debug.disableModIds", "cloth-gamerules")
+		}
 		server {
 			configName "Server"
 			runDir "run/server"
@@ -62,7 +68,7 @@ processResources {
 	inputs.property "version", project.version
 
 	filesMatching("fabric.mod.json") {
-		expand "version": project.version
+		expand "version": inputs.properties.version
 	}
 }
 
@@ -81,8 +87,10 @@ java {
 }
 
 jar {
+	inputs.property "archivesName", project.base.archivesName
+
 	from("LICENSE") {
-		rename { "${it}_${project.base.archivesName.get()}"}
+		rename { "${it}_${inputs.properties.archivesName}"}
 	}
 
 	exclude "**/*.xcf"

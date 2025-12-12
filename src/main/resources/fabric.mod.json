@@ -19,14 +19,14 @@
 		"main": [
 		],
 		"modmenu": [
-			"tk.estecka.preferredgamerules.config.ModMenu"
+			"fr.estecka.preferredgamerules.config.ModMenu"
 		]
 	},
 	"mixins": [
 		"preferred-gamerules.mixins.json"
 	],
 	"depends": {
-		"minecraft": ">=1.21.2 <1.21.11",
+		"minecraft": "~1.21.11",
 		"fabricloader": ">=0.16.7",
 		"java": ">=21"
 	},

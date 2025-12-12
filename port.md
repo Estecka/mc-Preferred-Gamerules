@@ -6,3 +6,7 @@ Initial Release
 #### No Workaround:
 - `Gamerules.accept` is no longer static
 - `Gamerules::new` Now requires feature flags
+
+### 1.21.11
+- Gamerules are now registered via the registry.
+- Most subtypes (`Rule`, `Type`, `Key`) are gone.

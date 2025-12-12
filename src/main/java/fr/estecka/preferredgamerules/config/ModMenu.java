@@ -1,4 +1,4 @@
-package tk.estecka.preferredgamerules.config;
+package fr.estecka.preferredgamerules.config;
 
 import java.io.IOException;
 import java.util.Optional;
@@ -11,11 +11,12 @@ import net.minecraft.client.gui.screen.world.EditGameRulesScreen;
 import net.minecraft.resource.featuretoggle.FeatureFlags;
 import net.minecraft.resource.featuretoggle.FeatureSet;
 import net.minecraft.text.Text;
-import net.minecraft.world.GameRules;
-import net.minecraft.world.GameRules.Rule;
+import net.minecraft.world.rule.GameRule;
+import net.minecraft.world.rule.GameRules;
 import tk.estecka.clothgamerules.api.ClothGamerulesScreenBuilder;
-import tk.estecka.preferredgamerules.IRuleFactory;
-import tk.estecka.preferredgamerules.PreferredGamerules;
+import fr.estecka.preferredgamerules.IRuleFactory;
+import fr.estecka.preferredgamerules.PrefRulesMod;
+
 
 public class ModMenu
 implements ModMenuApi
@@ -50,27 +51,23 @@ implements ModMenuApi
 
 	static private void SaveConsummer(Optional<GameRules> result){
 		if (result.isPresent()){
-			PreferredGamerules.gamerules.SetAsPreferred(result.get());
+			PrefRulesMod.preferences.SetAllAsPreferred(result.get());
 			try {
-				PreferredGamerules.io.Write(PreferredGamerules.gamerules);
+				PrefRulesMod.io.Write(PrefRulesMod.preferences);
 			}
 			catch (IOException e){
-				PreferredGamerules.LOGGER.error("Unable to save config: {}", e);
+				PrefRulesMod.LOGGER.error("Unable to save config: {}", e);
 			}
 		}
 	}
 
 	static private GameRules GetVanillaRules(){
-		GameRules result = new GameRules(ALL_FEATURES);
-
-		result.accept(new GameRules.Visitor(){
-			@Override public <T extends Rule<T>> void visit(GameRules.Key<T> key, GameRules.Type<T> type){
-				@SuppressWarnings("unchecked")
-				T vanilla = (T)IRuleFactory.<T>Of(type).preferredgamerules$CreateDefaultRule();
-				result.get(key).setValue(vanilla, null);
-			}
-		});
-
+		final GameRules result = new GameRules(ALL_FEATURES);
+		result.streamRules().forEach(rule -> SetVanillaSingle(result, rule));
 		return result;
+	}
+
+	static private <T> void SetVanillaSingle(GameRules values, GameRule<T> type){
+		values.setValue(type, IRuleFactory.Of(type).preferredgamerules$GetVanillaValue(), null);
 	}
 }
