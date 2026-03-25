@@ -1,9 +1,9 @@
 package fr.estecka.preferredgamerules;
 
 import java.util.Optional;
+import net.minecraft.world.level.gamerules.GameRule;
 import org.jetbrains.annotations.Nullable;
 import com.mojang.serialization.DataResult;
-import net.minecraft.world.rule.GameRule;
 
 
 public interface IRuleFactory<T>

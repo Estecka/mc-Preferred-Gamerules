@@ -2,12 +2,12 @@ package fr.estecka.preferredgamerules.config;
 
 import java.util.HashMap;
 import java.util.Map;
+import net.minecraft.core.registries.BuiltInRegistries;
+import net.minecraft.resources.Identifier;
+import net.minecraft.resources.ResourceKey;
+import net.minecraft.world.level.gamerules.GameRule;
+import net.minecraft.world.level.gamerules.GameRules;
 import com.mojang.serialization.DataResult;
-import net.minecraft.registry.Registries;
-import net.minecraft.registry.RegistryKey;
-import net.minecraft.util.Identifier;
-import net.minecraft.world.rule.GameRule;
-import net.minecraft.world.rule.GameRules;
 import fr.estecka.preferredgamerules.IRuleFactory;
 import fr.estecka.preferredgamerules.PrefRulesMod;
 
@@ -54,7 +54,7 @@ implements ConfigIO.ICodec
 	 * @param ruleId
 	 */
 	public void ApplySingle(Identifier ruleId){
-		this.ApplySingle(ruleId, Registries.GAME_RULE.get(ruleId));
+		this.ApplySingle(ruleId, BuiltInRegistries.GAME_RULE.getValue(ruleId));
 	}
 
 	public void ApplySingle(Identifier ruleId, GameRule<?> rule){
@@ -71,8 +71,8 @@ implements ConfigIO.ICodec
 	 * Changes all currently registered gamerules to match the preferences.
 	 */
 	public void ApplyAll(){
-		Registries.GAME_RULE.streamKeys()
-			.map(RegistryKey::getValue)
+		BuiltInRegistries.GAME_RULE.listElementIds()
+			.map(ResourceKey::identifier)
 			.forEach(this::ApplySingle)
 			;
 	}
@@ -81,15 +81,15 @@ implements ConfigIO.ICodec
 	 * Changes preferences and registered rules to match the given rules.
 	 */
 	public void	SetAllAsPreferred(final GameRules ruleValues){
-		ruleValues.streamRules().forEach(type -> this.SetSingleAsPreferred(ruleValues, type));
+		ruleValues.availableRules().forEach(type -> this.SetSingleAsPreferred(ruleValues, type));
 	}
 
 	public <T> void	SetSingleAsPreferred(GameRules values, GameRule<T> type){
-		Identifier key = Registries.GAME_RULE.getId(type);
+		Identifier key = BuiltInRegistries.GAME_RULE.getKey(type);
 
 		// Update preferences
-		String rawValue = type.getValueName(values.getValue(type));
-		String vanilla  = type.getValueName(IRuleFactory.Of(type).preferredgamerules$GetVanillaValue());
+		String rawValue = type.serialize(values.get(type));
+		String vanilla  = type.serialize(IRuleFactory.Of(type).preferredgamerules$GetVanillaValue());
 		if (rawValue.equals(vanilla))
 			this.rawValues.remove(key);
 		else

@@ -1,8 +1,8 @@
 package fr.estecka.preferredgamerules.mixin;
 
-import net.minecraft.world.rule.GameRule;
 import fr.estecka.preferredgamerules.IRuleFactory;
 import java.util.Optional;
+import net.minecraft.world.level.gamerules.GameRule;
 import org.jetbrains.annotations.Nullable;
 import org.spongepowered.asm.mixin.Final;
 import org.spongepowered.asm.mixin.Mixin;
@@ -46,7 +46,7 @@ implements IRuleFactory<T>
 	}
 
 	@Overwrite
-	public T getDefaultValue(){
+	public T defaultValue(){
 		return this.preferredValue.orElse(this.defaultValue);
 	}
 }
