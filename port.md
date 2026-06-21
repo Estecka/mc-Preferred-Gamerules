@@ -3,7 +3,6 @@
 Initial Release
 
 ## 1.21.2
-### No Workaround:
 - `Gamerules.accept` is no longer static
 - `Gamerules::new` Now requires feature flags
 
@@ -13,3 +12,6 @@ Initial Release
 
 ## 26.1
 - Gamerule Screen class is now split into a in-world and world-creation variants.
+
+## 26.2
+- `MinecraftClient::setScreen` was renamed to `setScreenAndShow`

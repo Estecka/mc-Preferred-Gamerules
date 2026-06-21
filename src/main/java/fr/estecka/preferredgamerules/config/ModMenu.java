@@ -34,7 +34,7 @@ implements ModMenuApi
 		// GameRules vanilla = GetVanillaRules();
 
 		// if (!FabricLoader.getInstance().isModLoaded("cloth-gamerules"))
-			return new WorldCreationGameRulesScreen( preferred, r -> {SaveConsummer(r); Minecraft.getInstance().setScreen(parent);} );
+			return new WorldCreationGameRulesScreen( preferred, r -> {SaveConsummer(r); Minecraft.getInstance().setScreenAndShow(parent);} );
 		// else {
 		// 	return new ClothGamerulesScreenBuilder()
 		// 		.Parent(parent)
