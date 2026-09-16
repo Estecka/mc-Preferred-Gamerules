@@ -17,7 +17,7 @@ public abstract class GameRuleMixin<T>
 implements IRuleFactory<T>
 {
 	@Shadow private @Final T defaultValue;
-	@Unique private Optional<T> preferredValue = null;
+	@Unique private Optional<T> preferredValue = Optional.empty();
 
 	@Shadow public abstract DataResult<T> deserialize(String value);
 
